@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+huffzip
+
+# Random test files
+samplefile.txt
