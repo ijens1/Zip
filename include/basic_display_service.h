@@ -1,14 +1,14 @@
-#ifndef BASIC_COMPRESSION_DISPLAY_SERVICE
-#define BASIC_COMPRESSION_DISPLAY_SERVICE
+#ifndef BASIC_DISPLAY_SERVICE
+#define BASIC_DISPLAY_SERVICE
 
 #include "display_service.h"
 
 namespace huffzip {
 
-  class BasicCompressionDisplayService : public CompressionDisplayService {
-      huffzip::ReadableDataCompressorInterface* compressor;
+  class BasicDisplayService : public DisplayService {
+      huffzip::Displayable* displayable;
 
-      void doSetCompressor(huffzip::ReadableDataCompressorInterface*) override;
+      void doSetDisplayable(huffzip::Displayable*) override;
       void doNotify() override;
   };
 }
