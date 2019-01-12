@@ -3,14 +3,15 @@
 
 #include "display_service.h"
 
-namespace huffzip {
+namespace zip {
 
   class BasicDisplayService : public DisplayService {
-      huffzip::Displayable* displayable;
+      zip::Displayable* displayable;
 
-      void doSetDisplayable(huffzip::Displayable*) override;
+      void doSetDisplayable(zip::Displayable*) override;
       void doNotify() override;
   };
+
 }
 
 

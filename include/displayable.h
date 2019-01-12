@@ -4,7 +4,7 @@
 #include <iostream>
 #include "subject.h"
 
-namespace huffzip {
+namespace zip {
 
   class Displayable : public Subject {
       virtual std::string doGetState() const = 0;

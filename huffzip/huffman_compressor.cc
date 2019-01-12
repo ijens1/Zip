@@ -2,6 +2,7 @@
 #include <fstream>
 #include <bitset>
 #include "huffman_compressor.h"
+#include "huffman_representation.h"
 
 std::string huffzip::HuffmanCompressor::doGetState() const {
   return compressor_state;
@@ -17,38 +18,39 @@ void huffzip::HuffmanCompressor::doSetProbabilityMassFunction(std::map<char, dou
 
 void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   std::string file_core = file_name.substr(0, file_name.find('.'));
+  std::string file_extension = file_name.substr(file_name.find('.'));
 
   compressor_state = "Determining encodings...";
   notifyAllObservers();
 
   // Construct the nodes
-  std::vector<std::unique_ptr<HuffmanNode>> nodes;
+  std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
   for (auto& i : pmf) {
-    nodes.push_back(std::make_unique<HuffmanNode>(i.first, i.second, nullptr, nullptr));
+    nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, i.second, nullptr, nullptr));
   }
 
   // Insert the nodes into the priority queue and construct the tree
-  std::priority_queue<HuffmanNode*, std::vector<HuffmanNode*>, CompareHuffmanNode> pq;
+  std::priority_queue<zip::HuffmanNode*, std::vector<zip::HuffmanNode*>, zip::CompareHuffmanNode> pq;
   for (auto& node : nodes) pq.push(node.get());
 
   while (pq.size() != 1) {
-    HuffmanNode* n1 = pq.top();
+    zip::HuffmanNode* n1 = pq.top();
     pq.pop();
-    HuffmanNode* n2 = pq.top();
+    zip::HuffmanNode* n2 = pq.top();
     pq.pop();
 
     // Make sure to keep RAII on all nodes created
-    nodes.push_back(std::make_unique<HuffmanNode>(n1->c + n2->c, n1->prob + n2->prob, n1, n2));
+    nodes.push_back(std::make_unique<zip::HuffmanNode>(n1->c + n2->c, n1->prob + n2->prob, n1, n2));
     pq.push(nodes.back().get());
   }
 
   // Determine the encodings
-  HuffmanNode *tree = pq.top();
+  zip::HuffmanNode *tree = pq.top();
   pq.pop();
   std::map<char, std::string> encodings;
   determineEncodings(encodings, tree, "");
 
-  std::ofstream fout{file_core + ".hz"};
+  std::ofstream fout{file_core + zip::huffman_file_extension};
   std::ifstream fin{file_name};
 
   std::string uncompressed_data;
@@ -86,9 +88,14 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
     compressed_data += encodings[c];
   }
   outputBinStrAsBin(compressed_data, fout);
+
+  compressor_state = "Writing original file extension...";
+  notifyAllObservers();
+
+  fout << file_extension;
 }
 
-void huffzip::HuffmanCompressor::determineEncodings(std::map<char, std::string>& encodings, const HuffmanNode* const curr_node, std::string curr_encoding) const {
+void huffzip::HuffmanCompressor::determineEncodings(std::map<char, std::string>& encodings, const zip::HuffmanNode* const curr_node, std::string curr_encoding) const {
   if (curr_node->lchild == nullptr && curr_node->rchild == nullptr) {
     encodings[curr_node->c] = curr_encoding;
   } else {
@@ -103,7 +110,7 @@ void huffzip::HuffmanCompressor::determineEncodings(std::map<char, std::string>&
 
 // Encode leaf node as 1. When decompressing, when you read in a one, just read
 // in the next byte to find out what the char is for that leaf.
-void huffzip::HuffmanCompressor::generateCompressedTree(const HuffmanNode *const tree, std::string& compressed_tree) const {
+void huffzip::HuffmanCompressor::generateCompressedTree(const zip::HuffmanNode *const tree, std::string& compressed_tree) const {
   if (tree->lchild == nullptr && tree->rchild == nullptr) {
     compressed_tree += '1' + std::bitset<8>(tree->c).to_string();
 
@@ -116,7 +123,6 @@ void huffzip::HuffmanCompressor::generateCompressedTree(const HuffmanNode *const
 }
 
 void huffzip::HuffmanCompressor::outputBinStrAsBin(const std::string& bin_data, std::ofstream& out) const {
-  
   size_t i = 0;
   for (; i < bin_data.size(); i += 8) {
     char next_byte = 0;

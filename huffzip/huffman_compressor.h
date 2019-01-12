@@ -6,29 +6,9 @@
 #include <memory>
 #include "data_compressor.h"
 
+namespace zip { class HuffmanNode; }
+
 namespace huffzip {
-
-  struct HuffmanNode {
-      unsigned int c;
-      double prob;
-      HuffmanNode *lchild = nullptr, *rchild = nullptr;
-
-      HuffmanNode() = default;
-      HuffmanNode(unsigned int c, double prob, HuffmanNode *lchild, HuffmanNode *rchild) : c{c}, prob{prob}, lchild{lchild}, rchild{rchild} {}
-      HuffmanNode(HuffmanNode&) = default;
-      HuffmanNode(HuffmanNode&&) = default;
-      HuffmanNode& operator=(HuffmanNode&) = default;
-      HuffmanNode& operator=(HuffmanNode&&) = default;
-      ~HuffmanNode() = default;
-  };
-
-  struct CompareHuffmanNode {
-    bool operator()(const HuffmanNode* n1, const HuffmanNode* n2) {
-      // return true if n1 is ordered before n2 (the top will now be smallest
-      // prob)
-      return n1->prob > n2->prob;
-    }
-  };
 
   class HuffmanCompressor : public DataCompressor {
       std::map<char, double> pmf;
@@ -40,8 +20,8 @@ namespace huffzip {
       void doSetProbabilityMassFunction(std::map<char, double>) override;
       void doCompressFile(std::string) override;
 
-      void determineEncodings(std::map<char, std::string>&, const HuffmanNode* const, std::string)const;
-      void generateCompressedTree(const HuffmanNode *const, std::string&) const;
+      void determineEncodings(std::map<char, std::string>&, const zip::HuffmanNode* const, std::string)const;
+      void generateCompressedTree(const zip::HuffmanNode *const, std::string&) const;
       void outputBinStrAsBin(const std::string&, std::ofstream&) const;
   };
 

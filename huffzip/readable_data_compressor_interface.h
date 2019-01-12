@@ -6,7 +6,7 @@
 
 namespace huffzip {
 
-  class ReadableDataCompressorInterface : public Displayable {
+  class ReadableDataCompressorInterface : public zip::Displayable {
       virtual double doGetPercentComplete() const = 0;
 
     public:

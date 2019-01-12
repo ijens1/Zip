@@ -1,7 +1,7 @@
 #ifndef OBSERVER_H
 #define OBSERVER_H
 
-namespace huffzip {
+namespace zip {
 
   class Observer {
     public:

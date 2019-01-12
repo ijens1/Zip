@@ -1,16 +1,16 @@
 #include "subject.h"
 
-void huffzip::Subject::notifyAllObservers() {
+void zip::Subject::notifyAllObservers() {
   for (auto& observer: observers) {
     observer->notify();
   }
 }
 
-void huffzip::Subject::addObserver(Observer* observer) {
+void zip::Subject::addObserver(Observer* observer) {
   observers.push_back(observer);
 }
 
-void huffzip::Subject::removeObserver(Observer* observer) {
+void zip::Subject::removeObserver(Observer* observer) {
   auto it = observers.begin();
   for (it = observers.begin(); it != observers.end() && *it != observer; ++it);
   observers.erase(it);

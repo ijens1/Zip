@@ -4,7 +4,7 @@
 #include <vector>
 #include "observer.h"
 
-namespace huffzip {
+namespace zip {
 
   class Subject {
       std::vector<Observer*> observers;

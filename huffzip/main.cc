@@ -11,7 +11,7 @@ int main(int argc, char** argv) {
     return 1;
   }
   std::unique_ptr<huffzip::DataCompressor> compressor = std::make_unique<huffzip::HuffmanCompressor>();
-  std::unique_ptr<huffzip::DisplayService> display_service = std::make_unique<huffzip::BasicDisplayService>();
+  std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
   display_service->setDisplayable(compressor.get());
 
   std::ifstream fin{argv[1]};
