@@ -30,7 +30,9 @@
 *.exe
 *.out
 *.app
-huffzip
+hz
+huz
 
 # Random test files
-samplefile.txt
+*.hz
+testfile1.txt
