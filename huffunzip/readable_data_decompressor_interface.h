@@ -1,0 +1,8 @@
+#ifndef READABLE_DATA_DECOMPRESSOR_INTERFACE_H
+#define READABLE_DATA_DECOMPRESSOR_INTERFACE_H
+
+namespace huffunzip {
+
+}
+
+#endif
