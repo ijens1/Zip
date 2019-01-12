@@ -1,4 +1,3 @@
-#include <iostream>
 #include <fstream>
 #include <bitset>
 #include "huffman_compressor.h"
@@ -20,7 +19,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   std::string file_core = file_name.substr(0, file_name.find('.'));
   std::string file_extension = file_name.substr(file_name.find('.'));
 
-  compressor_state = "Determining encodings...";
+  compressor_state = "Generating encodings...";
   notifyAllObservers();
 
   // Construct the nodes
@@ -65,10 +64,9 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   compressor_state = "Writing magic number...";
   notifyAllObservers();
 
-  unsigned int magic_number = 0x49444a4c;
-  fout << char(magic_number >> 24) << char(magic_number >> 16) << char(magic_number >> 8) << char(magic_number);
+  fout << char(zip::magic_number >> 24) << char(zip::magic_number >> 16) << char(zip::magic_number >> 8) << char(zip::magic_number);
 
-  compressor_state = "Storing compression model...";
+  compressor_state = "Generating compression model...";
   notifyAllObservers();
 
   // Generate compressed tree for decompression
@@ -80,7 +78,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
 
   fout << char(file_size >> 56) << char(file_size >> 48) << char(file_size >> 40) << char(file_size >> 32) << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
 
-  compressor_state = "Compressing data...";
+  compressor_state = "Writing compression model and compressed data...";
   notifyAllObservers();
 
   // Compress data

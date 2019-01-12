@@ -4,12 +4,13 @@
 #include <string>
 
 /**
- * This file stores information about how I've actually implemented the
- * compression.
+ * This file stores information about how I've actually implemented encoding.
 **/
 namespace zip {
 
   static const std::string huffman_file_extension = ".hz";
+  static const int magic_number = 0x49444a4c;
+  static const std::string magic_number_str = "IDJL";
 
   struct HuffmanNode {
       unsigned int c;
