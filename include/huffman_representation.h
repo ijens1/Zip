@@ -2,6 +2,7 @@
 #define HUFFMAN_NODE_H
 
 #include <string>
+#include <memory>
 
 /**
  * This file stores information about how I've actually implemented encoding.
@@ -15,10 +16,10 @@ namespace zip {
   struct HuffmanNode {
       unsigned int c;
       double prob;
-      HuffmanNode *lchild = nullptr, *rchild = nullptr;
+      HuffmanNode *lchild, *rchild;
 
       HuffmanNode() = default;
-      HuffmanNode(unsigned int c, double prob, HuffmanNode *lchild, HuffmanNode *rchild) : c{c}, prob{prob}, lchild{lchild}, rchild{rchild} {}
+      HuffmanNode(unsigned int c, double prob, HuffmanNode *lchild, HuffmanNode *rchild) : c{c}, prob{prob}, lchild{std::move(lchild)}, rchild{std::move(rchild)} {}
       HuffmanNode(HuffmanNode&) = default;
       HuffmanNode(HuffmanNode&&) = default;
       HuffmanNode& operator=(HuffmanNode&) = default;

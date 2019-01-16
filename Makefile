@@ -4,7 +4,7 @@ include_dir = $(current_dir)/include
 CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir)
 EXEC_1 = hz
 EXEC_2 = huz
-INCLUDE_OBJECTS = include/subject.o include/basic_display_service.o
+INCLUDE_OBJECTS = include/subject.o include/basic_display_service.o include/bit_io.o
 OBJECTS_1 = huffzip/main.o huffzip/huffman_compressor.o
 OBJECTS_2 = huffunzip/main.o huffunzip/huffman_decompressor.o
 
