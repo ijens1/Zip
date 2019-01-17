@@ -5,7 +5,10 @@
 #include <memory>
 #include "data_decompressor.h"
 
-namespace zip { class HuffmanNode; }
+namespace zip {
+  class HuffmanNode;
+  class BitIn;
+}
 
 namespace huffunzip {
 
@@ -17,7 +20,8 @@ namespace huffunzip {
       void doDecompressFile(std::string) override;
 
       unsigned long long retrieveUncompressedFileLength(std::istream&);
-      std::unique_ptr<zip::HuffmanNode> generateEncodingTree(std::istream&);
+      void generateEncodingTree(std::istream&, std::vector<std::unique_ptr<zip::HuffmanNode>>&, zip::BitIn&, zip::HuffmanNode*&);
+      char parseNextChar(std::istream&, zip::HuffmanNode*, zip::BitIn&);
   };
 
 }

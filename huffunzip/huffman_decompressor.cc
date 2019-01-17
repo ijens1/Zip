@@ -23,8 +23,11 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
   }
 
   std::string file_core = file_name.substr(0, file_name.find('.'));
+  // Decompress to current dir
+  if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
 
   std::ifstream fin{file_name};
+  zip::BitIn fbin;
 
   char c;
   std::string magic_number_str;
@@ -53,7 +56,16 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
 
   std::cout << original_file_extension << std::endl;
 
-  std::unique_ptr<zip::HuffmanNode> encoding_tree = generateEncodingTree(fin);
+  std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
+  zip::HuffmanNode *tree;
+
+  generateEncodingTree(fin, nodes, fbin, tree);
+
+  // Now we have all the information we need to generate the original file.
+  std::ofstream fout{file_core + "." + original_file_extension};
+
+  unsigned long long count = 0;
+  while (count++ != uncompressed_file_length) fout << parseNextChar(fin, tree, fbin);
 }
 
 unsigned long long huffunzip::HuffmanDecompressor::retrieveUncompressedFileLength(std::istream& in) {
@@ -69,12 +81,31 @@ unsigned long long huffunzip::HuffmanDecompressor::retrieveUncompressedFileLengt
 }
 
 // Pre: std::istream& in must be position before encoded tree structure
-std::unique_ptr<zip::HuffmanNode> huffunzip::HuffmanDecompressor::generateEncodingTree(std::istream& in) {
-  zip::BitIn fbin;
-  std::stack<std::unique_ptr<zip::HuffmanNode>> node_s;
-  while (true) {
-    char b;
-    fbin.pullBit(b, in);
+void huffunzip::HuffmanDecompressor::generateEncodingTree(std::istream& in, std::vector<std::unique_ptr<zip::HuffmanNode>>& nodes, zip::BitIn& fbin, zip::HuffmanNode*& curr_node) {
+  unsigned char b;
+  fbin.pullBit(b, in);
+  if (b == 1) {
+    char c;
+    in >> c;
+    nodes.push_back(std::make_unique<zip::HuffmanNode>(c, 0, nullptr, nullptr));
+    curr_node = nodes.back().get();
+  } else if (b == 0) {
+    nodes.push_back(std::make_unique<zip::HuffmanNode>(0, 0, nullptr, nullptr));
+    generateEncodingTree(in, nodes, fbin, nodes.back().get()->lchild);
+    generateEncodingTree(in, nodes, fbin, nodes.back().get()->rchild);
   }
 }
 
+
+char huffunzip::HuffmanDecompressor::parseNextChar(std::istream& in, zip::HuffmanNode *tree, zip::BitIn& fbin) {
+  while (!(tree->lchild == nullptr && tree->rchild == nullptr)) {
+    unsigned char b;
+    fbin.pullBit(b, in);
+    if (b == 0) {
+      tree = tree->lchild;
+    } else if (b == 1) {
+      tree = tree->rchild;
+    }
+  }
+  return tree->c;
+}

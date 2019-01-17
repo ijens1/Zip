@@ -18,6 +18,9 @@ void huffzip::HuffmanCompressor::doSetProbabilityMassFunction(std::map<char, dou
 
 void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   std::string file_core = file_name.substr(0, file_name.find('.'));
+
+  // Compress to current dir
+  if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
   std::string file_extension = file_name.substr(file_name.find('.') + 1);
 
   compressor_state = "Generating encodings...";

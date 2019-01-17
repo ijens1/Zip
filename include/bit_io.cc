@@ -11,7 +11,7 @@ void zip::BitOut::putBin(const std::string& bit_str, std::ostream& out) {
   }
 }
 
-void zip::BitIn::pullBit(char& char_bit, std::istream& in) {
+void zip::BitIn::pullBit(unsigned char& char_bit, std::istream& in) {
   if (curr_bit_index == 7) {
     in >> curr_byte;
     curr_bit_index = 0;
