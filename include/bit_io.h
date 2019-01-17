@@ -1,5 +1,5 @@
-#ifndef INCLUDE_BIT_IO_H_
-#define INCLUDE_BIT_IO_H_
+#ifndef INCLUDE_BIT_IO_H
+#define INCLUDE_BIT_IO_H
 
 #include <istream>
 #include <ostream>
@@ -27,4 +27,4 @@ namespace zip {
   };
 }
 
-#endif // INCLUDE_BIT_IO_H_
+#endif
