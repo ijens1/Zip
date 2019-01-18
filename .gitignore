@@ -33,6 +33,6 @@
 hz
 huz
 
-# Random test files
+# Test files
 *.hz
-testfile1.txt
+testfiles/

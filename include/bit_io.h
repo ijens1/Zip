@@ -18,12 +18,13 @@ namespace zip {
   };
 
   class BitIn {
-      unsigned char curr_byte = 0;
-      int curr_bit_index = 0;
+      char curr_byte = 0;
+      int curr_bit_index = -1;
 
     public:
       // Reads in next bit into first bit of provided char
       void pullBit(unsigned char&, std::istream&);
+      void pullByte(unsigned char&, std::istream&);
   };
 }
 

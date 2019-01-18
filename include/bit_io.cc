@@ -13,10 +13,21 @@ void zip::BitOut::putBin(const std::string& bit_str, std::ostream& out) {
 
 void zip::BitIn::pullBit(unsigned char& char_bit, std::istream& in) {
   if (curr_bit_index == 7) {
-    in >> curr_byte;
-    curr_bit_index = 0;
-  } else {
-    curr_bit_index++;
+    curr_bit_index = -1;
   }
-  char_bit = ((curr_byte >> (7 - curr_bit_index)) | 1);
+  if (curr_bit_index == -1) {
+    in.get(curr_byte);
+  }
+  curr_bit_index++;
+  unsigned char curr_byte_u = curr_byte;
+  char_bit = ((curr_byte_u >> (7 - curr_bit_index)) & 1);
+}
+
+void zip::BitIn::pullByte(unsigned char& c, std::istream& in) {
+  c = 0;
+  for (int i = 7; i >= 0; --i) {
+    unsigned char b;
+    pullBit(b, in);
+    c |= (b << i);
+  }
 }
