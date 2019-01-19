@@ -81,7 +81,8 @@ unsigned long long huffunzip::HuffmanDecompressor::retrieveUncompressedFileLengt
   for (int i = 0; i < 8; ++i) {
     unsigned long long temp = 0;
     in.get(c);
-    temp |= c;
+    unsigned char c_u = c;
+    temp |= c_u;
     ufl |= (temp << ((7 - i) * 8));
   }
   return ufl;
