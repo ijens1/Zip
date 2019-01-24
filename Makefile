@@ -1,12 +1,12 @@
 CXX = g++
 current_dir = $(shell pwd)
-include_dir = $(current_dir)/include
+include_dir = $(current_dir)/src/include
 CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir)
-EXEC_1 = hz
-EXEC_2 = huz
-INCLUDE_OBJECTS = include/subject.o include/basic_display_service.o include/bit_io.o
-OBJECTS_1 = huffzip/main.o huffzip/huffman_compressor.o
-OBJECTS_2 = huffunzip/main.o huffunzip/huffman_decompressor.o
+EXEC_1 = cpress
+EXEC_2 = dpress
+INCLUDE_OBJECTS = src/include/subject.o src/include/basic_display_service.o src/include/bit_io.o
+OBJECTS_1 = src/cpressmain.o src/compressors/huffzip/huffman_compressor.o
+OBJECTS_2 = src/dpressmain.o src/decompressors/huffunzip/huffman_decompressor.o
 
 all: ${EXEC_1} ${EXEC_2}
 

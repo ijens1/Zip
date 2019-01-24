@@ -2,7 +2,7 @@
 #include <fstream>
 #include <map>
 #include <algorithm>
-#include "huffman_compressor.h"
+#include "compressors/huffzip/huffman_compressor.h"
 #include "basic_display_service.h"
 
 int main(int argc, char** argv) {

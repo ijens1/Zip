@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include "huffman_decompressor.h"
+#include "decompressors/huffunzip/huffman_decompressor.h"
 #include "basic_display_service.h"
 #include "zip_exception.h"
 
