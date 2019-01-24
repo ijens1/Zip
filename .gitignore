@@ -30,8 +30,8 @@
 *.exe
 *.out
 *.app
-hz
-huz
+cpress
+dpress
 
 # Test files
 *.hz
