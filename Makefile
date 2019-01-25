@@ -5,8 +5,8 @@ CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir)
 EXEC_1 = cpress
 EXEC_2 = dpress
 INCLUDE_OBJECTS = src/include/subject.o src/include/basic_display_service.o src/include/bit_io.o
-OBJECTS_1 = src/cpressmain.o src/compressors/huffzip/huffman_compressor.o
-OBJECTS_2 = src/dpressmain.o src/decompressors/huffunzip/huffman_decompressor.o
+OBJECTS_1 = src/cpressmain.o src/compressors/arithzip/arithmetic_compressor.o
+OBJECTS_2 = src/dpressmain.o src/decompressors/arithunzip/arithmetic_decompressor.o
 
 all: ${EXEC_1} ${EXEC_2}
 

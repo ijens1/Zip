@@ -2,7 +2,8 @@
 #include <fstream>
 #include <map>
 #include <algorithm>
-#include "compressors/huffzip/huffman_compressor.h"
+#include <memory>
+#include "compressors/arithzip/arithmetic_compressor.h"
 #include "basic_display_service.h"
 
 int main(int argc, char** argv) {
@@ -10,7 +11,7 @@ int main(int argc, char** argv) {
     std::cerr << "Program does not support multiple file compression at the moment" << std::endl;
     return 1;
   }
-  std::unique_ptr<huffzip::DataCompressor> compressor = std::make_unique<huffzip::HuffmanCompressor>();
+  std::unique_ptr<huffzip::DataCompressor> compressor = std::make_unique<arithzip::ArithmeticCompressor>();
   std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
   display_service->setDisplayable(compressor.get());
 
