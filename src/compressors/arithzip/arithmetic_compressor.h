@@ -5,7 +5,7 @@
 
 namespace arithzip {
 
-  class ArithmeticCompressor : public DataCompressor {
+  class ArithmeticCompressor : public zip::DataCompressor {
     std::map<char, double> pmf;
     std::string compressor_state = "";
 

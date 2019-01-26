@@ -33,11 +33,11 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
 
   char c;
   std::string magic_number_str;
-  for (int i = 0; i < 4; ++i) {
+  for (size_t i = 0; i < zip::huffman_magic_number_str.length(); ++i) {
     fin.get(c);
     magic_number_str += c;
   }
-  if (magic_number_str != zip::magic_number_str) {
+  if (magic_number_str != zip::huffman_magic_number_str) {
     throw zip::ZipException{"The provided .hz file is corrupted\nTerminating..."};
   }
 

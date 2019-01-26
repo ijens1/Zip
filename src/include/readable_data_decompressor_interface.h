@@ -3,7 +3,7 @@
 
 #include "displayable.h"
 
-namespace huffunzip {
+namespace zip {
 
   class ReadableDataDecompressorInterface : public zip::Displayable {
       virtual double doGetPercentComplete() const = 0;

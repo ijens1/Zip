@@ -4,7 +4,7 @@
 #include "readable_data_decompressor_interface.h"
 #include <string>
 
-namespace huffunzip {
+namespace zip {
 
   class DataDecompressor : public ReadableDataDecompressorInterface {
       virtual void doDecompressFile(std::string) = 0;

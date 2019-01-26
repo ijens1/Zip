@@ -12,7 +12,7 @@ namespace zip {
 
 namespace huffunzip {
 
-  class HuffmanDecompressor : public DataDecompressor {
+  class HuffmanDecompressor : public zip::DataDecompressor {
       std::string decompressor_state = "";
 
       std::string doGetState() const override;

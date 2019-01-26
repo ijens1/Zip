@@ -4,7 +4,7 @@
 #include "readable_data_compressor_interface.h"
 #include "writable_data_compressor_interface.h"
 
-namespace huffzip {
+namespace zip {
 
   class DataCompressor: public ReadableDataCompressorInterface, public WritableDataCompressorInterface {
       virtual void doCompressFile(std::string) = 0;

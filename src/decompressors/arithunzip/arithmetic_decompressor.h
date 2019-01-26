@@ -6,7 +6,7 @@
 
 namespace arithunzip {
 
-  class ArithmeticDecompressor : public DataDecompressor {
+  class ArithmeticDecompressor : public zip::DataDecompressor {
     std::string decompressor_state = "";
 
     std::string doGetState() const override;

@@ -10,7 +10,7 @@ namespace zip { class HuffmanNode; }
 
 namespace huffzip {
 
-  class HuffmanCompressor : public DataCompressor {
+  class HuffmanCompressor : public zip::DataCompressor {
       std::map<char, double> pmf;
       std::string compressor_state = "";
       unsigned long long current_byte = 0;

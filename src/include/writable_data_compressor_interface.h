@@ -3,7 +3,7 @@
 
 #include <map>
 
-namespace huffzip {
+namespace zip {
 
   class WritableDataCompressorInterface {
       virtual void doSetProbabilityMassFunction(std::map<char, double>) = 0;

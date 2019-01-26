@@ -4,7 +4,7 @@
 #include <string>
 #include "displayable.h"
 
-namespace huffzip {
+namespace zip {
 
   class ReadableDataCompressorInterface : public zip::Displayable {
       virtual double doGetPercentComplete() const = 0;

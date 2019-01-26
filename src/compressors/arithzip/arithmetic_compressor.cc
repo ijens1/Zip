@@ -12,9 +12,11 @@ void arithzip::ArithmeticCompressor::doSetProbabilityMassFunction(std::map<char,
   this->pmf = pmf;
 }
 
-void arithzip::doCompressFile(std::string file_name) {
-  // Divide [0, 1) into subintervals based on pmf
-  // Continue descending into intervals based on next character to be encoded
-  // Return any fraction inside of the final interval (I'll most likely just
-  // return the half way point)
+void arithzip::ArithmeticCompressor::doCompressFile(std::string file_name) {
+  std::string file_core = file_name.substr(0, file_name.find('.'));
+
+  // Compress to current dir
+  if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
+  std::string file_extension = file_name.substr(file_name.find('.') + 1);
+
 }

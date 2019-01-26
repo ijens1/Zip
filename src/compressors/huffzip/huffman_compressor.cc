@@ -70,7 +70,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   compressor_state = "Writing magic number...";
   notifyAllObservers();
 
-  fout << char(zip::magic_number >> 24) << char(zip::magic_number >> 16) << char(zip::magic_number >> 8) << char(zip::magic_number);
+  fout << char(zip::huffman_magic_number >> 32) << char(zip::huffman_magic_number >> 24) << char(zip::huffman_magic_number >> 16) << char(zip::huffman_magic_number >> 8) << char(zip::huffman_magic_number);
 
   compressor_state = "Generating compression model...";
   notifyAllObservers();

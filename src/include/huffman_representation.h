@@ -10,8 +10,8 @@
 namespace zip {
 
   static const std::string huffman_file_extension = ".hz";
-  static const int magic_number = 0x49444a4c;
-  static const std::string magic_number_str = "IDJL";
+  static const unsigned long long huffman_magic_number = 0x4849444a4c;
+  static const std::string huffman_magic_number_str = "HIDJL";
 
   struct HuffmanNode {
       unsigned int c;
