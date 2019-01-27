@@ -13,12 +13,12 @@ int main(int argc, char** argv) {
     std::cerr << "Program does not support multiple file compression at the moment" << std::endl;
     return 1;
   }
-  if (!std::strcmp(argv[1], "huffman") && !std::strcmp(argv[1], "arithmetic")) {
+  if (std::strcmp(argv[1], "huffman") != 0 && std::strcmp(argv[1], "arithmetic") != 0) {
     std::cerr << "Invalid compression form. Second argument must be one of \'huffman\' or \'arithmetic\'" << std::endl;
     return 2;
   }
   std::unique_ptr<zip::DataCompressor> compressor = nullptr;
-  if (std::strcmp(argv[1], "huffman")) {
+  if (std::strcmp(argv[1], "huffman") == 0) {
     compressor = std::make_unique<huffzip::HuffmanCompressor>();
   } else {
     compressor = std::make_unique<arithzip::ArithmeticCompressor>();
@@ -30,7 +30,7 @@ int main(int argc, char** argv) {
   std::map<char, double> pmf;
   char c;
   int count = 0;
-  while (fin.get(c)) {
+  while (fin.get(c) && c != '\n') {
     ++count;
     ++pmf[c];
   }

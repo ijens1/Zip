@@ -7,16 +7,16 @@
 #include "zip_exception.h"
 
 int main(int argc, char** argv) {
-  if (argc > 2) {
+  if (argc > 3) {
     std::cerr << "Program does not support multiple file decompression at the moment" << std::endl;
     return 1;
   }
-  if (!std::strcmp(argv[1], "huffman") && !std::strcmp(argv[1], "arithmetic")) {
+  if (std::strcmp(argv[1], "huffman") != 0 && std::strcmp(argv[1], "arithmetic") != 0) {
     std::cerr << "Invalid decompression form. Second argument must be one of \'huffman\' or \'arithmetic\'" << std::endl;
     return 2;
   }
   std::unique_ptr<zip::DataDecompressor> decompressor = nullptr;
-  if (std::strcmp(argv[1], "huffman")) {
+  if (std::strcmp(argv[1], "huffman") == 0) {
     decompressor = std::make_unique<huffunzip::HuffmanDecompressor>();
   } else {
     decompressor = std::make_unique<arithunzip::ArithmeticDecompressor>();
