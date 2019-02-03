@@ -6,12 +6,12 @@
 namespace arithzip {
 
   class ArithmeticCompressor : public zip::DataCompressor {
-    std::map<char, double> pmf;
+    zip::Model model;
     std::string compressor_state = "";
 
     std::string doGetState() const override;
     double doGetPercentComplete() const override;
-    void doSetProbabilityMassFunction(std::map<char, double>) override;
+    void doSetModel(zip::Model) override;
     void doCompressFile(std::string) override;
   };
 

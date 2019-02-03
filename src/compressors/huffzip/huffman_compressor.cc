@@ -1,8 +1,10 @@
 #include <fstream>
 #include <bitset>
+#include <algorithm>
 #include "huffman_compressor.h"
 #include "huffman_representation.h"
 #include "bit_io.h"
+#include "zip_exception.h"
 
 std::string huffzip::HuffmanCompressor::doGetState() const {
   return compressor_state;
@@ -12,8 +14,8 @@ double huffzip::HuffmanCompressor::doGetPercentComplete() const {
   return 0;
 }
 
-void huffzip::HuffmanCompressor::doSetProbabilityMassFunction(std::map<char, double> pmf) {
-  this->pmf = pmf;
+void huffzip::HuffmanCompressor::doSetModel(zip::Model model) {
+  this->model = model;
 }
 
 void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
@@ -27,7 +29,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   notifyAllObservers();
 
   std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
-  for (auto& i : pmf) nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, i.second, nullptr, nullptr));
+  for (auto& i : model) nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, i.second.first / i.second.second, nullptr, nullptr));
 
   // Insert the nodes into the priority queue and construct the tree
   // Note that even though there is a call to new here, they should all be
@@ -98,6 +100,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
 
   // Compress data
   for (auto c : uncompressed_data) {
+    
     compressed_data += encodings[c];
   }
   fbout.putBin(compressed_data, fout);

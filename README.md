@@ -2,15 +2,15 @@
 Hi. This is a basic compression exercise (emphasis on basic) to help me learn
 about how simple data compression algorithms work.
 
-At the moment, this repo includes just huffman coding, although I'm thinking 
-about possibly doing arithmetic coding at some point. I've followed the basic
+At the moment, the complete zipping methods this repo includes just huffman
+coding, although I'm working on arithmetic coding at the moment. I've followed the basic
 steps laid out in [wikipedia](https://en.wikipedia.org/wiki/Huffman_coding) for
-the coding algorithm.
+the huffmain coding algorithm.
 
-Basic usage for huffman coding is 
+Usage for huffman coding is 
 ```shell
 $ make
-$ ./cpress <your_file.file_extension>
+$ ./cpress -m huffman <your_file.file_extension>
 ```
 This should produce a file called `your_file.hz` in the current directory. This is the compressed data.
 (You might notice that the compression is usually about 50% or less, haven't
@@ -23,3 +23,7 @@ $ ./dpress <your_file.hz>
 ```
 
 This should produce your original file in the current directory.
+
+## Options
+### `-m` Option
+The current values available for this option are `huffman` and `arithmetic`.

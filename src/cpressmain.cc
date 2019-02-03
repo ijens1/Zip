@@ -7,18 +7,49 @@
 #include "compressors/huffzip/huffman_compressor.h"
 #include "compressors/arithzip/arithmetic_compressor.h"
 #include "basic_display_service.h"
+#include "model.h"
+
+enum METHOD {
+  HUFFMAN = 0,
+  ARITHMETIC
+};
 
 int main(int argc, char** argv) {
-  if (argc > 3) {
-    std::cerr << "Program does not support multiple file compression at the moment" << std::endl;
-    return 1;
+  // Process arguments to determine following variables
+  bool has_compression_method = false;
+  METHOD m;
+  std::string file_name = "";
+
+  bool has_provided_file_name = false;
+  for (int i = 1; i < argc; ++i) {
+    if (std::strcmp(argv[i], "-m") ==  0 && !has_provided_file_name) {
+      if (std::strcmp(argv[i + 1], "huffman") == 0) {
+        m = HUFFMAN;
+        has_compression_method = true;
+      } else if (std::strcmp(argv[i + 1], "arithmetic") == 0) {
+        m = ARITHMETIC;
+        has_compression_method = true;
+      } else {
+        std::cerr << "ERROR: Invalid compression method \'" << argv[i + 1] << "\'" << std::endl;
+        return 1;
+      }
+      ++i;
+    } else {
+      if (has_provided_file_name) {
+        std::cerr << "ERROR: Multiple file compresson is not supported." << std::endl;
+        return 2;
+      }
+      has_provided_file_name = true;
+      file_name = argv[i];
+    }
   }
-  if (std::strcmp(argv[1], "huffman") != 0 && std::strcmp(argv[1], "arithmetic") != 0) {
-    std::cerr << "Invalid compression form. Second argument must be one of \'huffman\' or \'arithmetic\'" << std::endl;
-    return 2;
+  if (!has_compression_method) {
+    std::cerr << "ERROR: Please specify a compression method using the -m option (see readme for current option values)" << std::endl;
+    return 3;
   }
+
   std::unique_ptr<zip::DataCompressor> compressor = nullptr;
-  if (std::strcmp(argv[1], "huffman") == 0) {
+  if (m == HUFFMAN) {
     compressor = std::make_unique<huffzip::HuffmanCompressor>();
   } else {
     compressor = std::make_unique<arithzip::ArithmeticCompressor>();
@@ -26,16 +57,19 @@ int main(int argc, char** argv) {
   std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
   display_service->setDisplayable(compressor.get());
 
-  std::ifstream fin{argv[2]};
-  std::map<char, double> pmf;
+  std::ifstream fin{file_name};
+
+  // The pair of ull ull represents the fraction of the uncompressed data which
+  // c is
+  std::map<char, std::pair<unsigned long long, unsigned long long>> denominations;
   char c;
-  int count = 0;
-  while (fin.get(c) && c != '\n') {
+  unsigned long long count = 0;
+  while (fin.get(c)) {
     ++count;
-    ++pmf[c];
+    ++denominations[c].first;
   }
-  for (auto& freq : pmf) freq.second /= count;
-  compressor->setProbabilityMassFunction(pmf);
-  compressor->compressFile(argv[2]);
+  for (auto& p : denominations) p.second.second = count;
+  compressor->setModel(zip::Model{denominations});
+  compressor->compressFile(file_name);
   return 0;
 }

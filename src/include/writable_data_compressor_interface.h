@@ -2,15 +2,16 @@
 #define WRITABLE_DATA_COMPRESSION_INTERFACE_H
 
 #include <map>
+#include "model.h"
 
 namespace zip {
 
   class WritableDataCompressorInterface {
-      virtual void doSetProbabilityMassFunction(std::map<char, double>) = 0;
+      virtual void doSetModel(Model model) = 0;
 
     public:
       virtual ~WritableDataCompressorInterface() = default;
-      void setProbabilityMassFunction(std::map<char, double> pmf) { doSetProbabilityMassFunction(pmf); }
+      void setModel(Model model) { doSetModel(model); }
   };
 
 }

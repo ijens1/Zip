@@ -4,7 +4,7 @@ include_dir = $(current_dir)/src/include
 CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir)
 EXEC_1 = cpress
 EXEC_2 = dpress
-INCLUDE_OBJECTS = src/include/subject.o src/include/basic_display_service.o src/include/bit_io.o
+INCLUDE_OBJECTS = src/include/subject.o src/include/basic_display_service.o src/include/bit_io.o src/include/model.o
 OBJECTS_1 = src/cpressmain.o src/compressors/huffzip/huffman_compressor.o src/compressors/arithzip/arithmetic_compressor.o
 OBJECTS_2 = src/dpressmain.o src/decompressors/huffunzip/huffman_decompressor.o src/decompressors/arithunzip/arithmetic_decompressor.o
 

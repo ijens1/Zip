@@ -17,10 +17,6 @@ double huffunzip::HuffmanDecompressor::doGetPercentComplete() const {
 void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
   std::string file_extension = file_name.substr(file_name.find('.'));
 
-  if (file_extension != zip::huffman_file_extension) {
-    throw zip::ZipException{"Cannot decompress " + file_extension + " file with huffman decompression\nTerminating..."};
-  }
-
   std::string file_core = file_name.substr(0, file_name.find('.'));
   // Decompress to current dir
   if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
@@ -38,7 +34,7 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
     magic_number_str += c;
   }
   if (magic_number_str != zip::huffman_magic_number_str) {
-    throw zip::ZipException{"The provided .hz file is corrupted\nTerminating..."};
+    throw zip::ZipException{"ERROR: The provided .hz file is corrupted\nTerminating..."};
   }
 
   decompressor_state = "Retrieving original file length...";
