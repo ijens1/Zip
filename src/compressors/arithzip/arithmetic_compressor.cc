@@ -58,6 +58,21 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string file_name) {
 
   fout << zip::arithmetic_magic_number_str;
 
+  unsigned char file_extension_length = file_extension.length();
+
+  compressor_state = "Writing file extension...";
+  notifyAllObservers();
+
+  fout << file_extension_length << file_extension;
+
+  compressor_state = "Writing model...";
+  notifyAllObservers();
+
+  fout << model.getNumElements();
+  for (auto c : model) {
+    fout << c.first << c.second;
+  }
+
   // Stores the number of opposite bits that need to be outputted after
   // symmetrically expanding the interval [0.25, 0.75) num_pending_bits number of
   // times

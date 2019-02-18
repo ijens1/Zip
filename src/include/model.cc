@@ -45,3 +45,7 @@ void zip::Model::incrementCharOccurence(char c) {
   // of the alphabet
   setRanges();
 }
+
+size_t zip::Model::getNumElements() {
+  return occurences.size();
+}

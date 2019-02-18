@@ -30,6 +30,7 @@ namespace zip {
       double getProb(char);
       Range getRange(char);
       void incrementCharOccurence(char);
+      size_t getNumElements();
 
       std::map<char, unsigned long long>::const_iterator begin() {
         return occurences.begin();

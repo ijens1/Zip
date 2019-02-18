@@ -1,6 +1,8 @@
 #ifndef ZIP_EXCEPTION_H
 #define ZIP_EXCEPTION_H
 
+#include <string>
+
 namespace zip {
 
   class ZipException {

@@ -6,7 +6,7 @@
 #include <memory>
 #include "data_compressor.h"
 
-namespace zip { class HuffmanNode; }
+namespace zip { struct HuffmanNode; }
 
 namespace huffzip {
 
