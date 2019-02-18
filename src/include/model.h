@@ -6,19 +6,19 @@
 namespace zip {
 
   struct Range {
-    unsigned long long upper, lower, denominator;
+    unsigned long long high, low, denominator;
   };
 
   // Model class to contain model behaviour and support possible adaptive modelling
   class Model {
-      std::map<char, std::pair<unsigned long long, unsigned long long>> denominations;
+      std::map<char, unsigned long long> occurences;
       std::map<char, Range> ranges;
 
       void setRanges();
 
     public:
       Model() {}
-      Model(std::map<char, std::pair<unsigned long long, unsigned long long>> initial_denominations) : denominations{initial_denominations} {
+      Model(std::map<char, unsigned long long> occurences) : occurences{occurences} {
         setRanges();
       }
       Model(Model&) = default;
@@ -29,13 +29,14 @@ namespace zip {
 
       double getProb(char);
       Range getRange(char);
+      void incrementCharOccurence(char);
 
-      std::map<char, std::pair<unsigned long long, unsigned long long>>::const_iterator begin() {
-        return denominations.begin();
+      std::map<char, unsigned long long>::const_iterator begin() {
+        return occurences.begin();
       }
 
-      std::map<char, std::pair<unsigned long long, unsigned long long>>::const_iterator end() {
-        return denominations.end();
+      std::map<char, unsigned long long>::const_iterator end() {
+        return occurences.end();
       }
   };
 

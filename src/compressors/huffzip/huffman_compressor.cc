@@ -29,7 +29,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   notifyAllObservers();
 
   std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
-  for (auto& i : model) nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, i.second.first / i.second.second, nullptr, nullptr));
+  for (auto& i : model) nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, model.getProb(i.first), nullptr, nullptr));
 
   // Insert the nodes into the priority queue and construct the tree
   // Note that even though there is a call to new here, they should all be
@@ -72,9 +72,9 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   compressor_state = "Writing magic number...";
   notifyAllObservers();
 
-  fout << char(zip::huffman_magic_number >> 32) << char(zip::huffman_magic_number >> 24) << char(zip::huffman_magic_number >> 16) << char(zip::huffman_magic_number >> 8) << char(zip::huffman_magic_number);
+  fout << zip::huffman_magic_number_str;
 
-  compressor_state = "Generating compression model...";
+  compressor_state = "Writing compression model...";
   notifyAllObservers();
 
   // Generate compressed tree for decompression

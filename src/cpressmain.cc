@@ -61,15 +61,12 @@ int main(int argc, char** argv) {
 
   // The pair of ull ull represents the fraction of the uncompressed data which
   // c is
-  std::map<char, std::pair<unsigned long long, unsigned long long>> denominations;
+  std::map<char, unsigned long long> occurences;
   char c;
-  unsigned long long count = 0;
   while (fin.get(c)) {
-    ++count;
-    ++denominations[c].first;
+    ++occurences[c];
   }
-  for (auto& p : denominations) p.second.second = count;
-  compressor->setModel(zip::Model{denominations});
+  compressor->setModel(zip::Model{occurences});
   compressor->compressFile(file_name);
   return 0;
 }
