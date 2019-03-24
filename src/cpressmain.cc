@@ -66,6 +66,8 @@ int main(int argc, char** argv) {
   while (fin.get(c)) {
     ++occurences[c];
   }
+  // Add in the EOF character occurence
+  ++occurences[char(256)];
   compressor->setModel(zip::Model{occurences});
   compressor->compressFile(file_name);
   return 0;

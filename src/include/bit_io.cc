@@ -16,7 +16,8 @@ void zip::BitIn::pullBit(unsigned char& char_bit, std::istream& in) {
     curr_bit_index = -1;
   }
   if (curr_bit_index == -1) {
-    in.get(curr_byte);
+    char next_byte;
+    curr_byte = (in.get(next_byte)) ? next_byte : 0;
   }
   curr_bit_index++;
   unsigned char curr_byte_u = curr_byte;

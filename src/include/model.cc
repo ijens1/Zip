@@ -1,3 +1,4 @@
+#include <iostream>
 #include "model.h"
 #include "zip_exception.h"
 
@@ -9,12 +10,15 @@ void zip::Model::setRanges() {
   for (auto& o : occurences) {
     count += o.second;
     ranges[o.first] = Range{curr_min + o.second, curr_min, 0};
+    search_set.insert(std::make_pair(curr_min, o.first));
     curr_min += o.second;
   }
 
   for (auto& r : ranges) {
     r.second.denominator = count;
   }
+
+  total_occurences = count;
 }
 
 double zip::Model::getProb(char c) {
@@ -48,4 +52,17 @@ void zip::Model::incrementCharOccurence(char c) {
 
 size_t zip::Model::getNumElements() {
   return occurences.size();
+}
+
+// Count isn't the actual count of the character. It includes all the
+// counts of the characters that alphabetically come before it.
+char zip::Model::getChar(unsigned long long count) {
+  // This line should never resolve based on character value since each
+  // character in the search set has non-zero occurence count
+  std::set<std::pair<unsigned long long, char>>::iterator i = search_set.upper_bound(std::make_pair(count, 255));
+  return (i == search_set.end()) ? search_set.rbegin()->second : (--i)->second;
+}
+
+unsigned long long zip::Model::getTotalOccurences() {
+  return total_occurences;
 }
