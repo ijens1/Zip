@@ -39,9 +39,6 @@ namespace arithzip {
     double doGetPercentComplete() const override;
     void doSetModel(zip::Model) override;
     void doCompressFile(std::string) override;
-
-    void outputPendingBits(unsigned int&, bool, std::string&);
-    void update(char c, std::string& bin_output);
   };
 
 }

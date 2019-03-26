@@ -61,13 +61,11 @@ int main(int argc, char** argv) {
 
   // The pair of ull ull represents the fraction of the uncompressed data which
   // c is
-  std::map<char, unsigned long long> occurences;
+  std::map<int, unsigned long long> occurences;
   char c;
   while (fin.get(c)) {
     ++occurences[c];
   }
-  // Add in the EOF character occurence
-  ++occurences[char(256)];
   compressor->setModel(zip::Model{occurences});
   compressor->compressFile(file_name);
   return 0;
