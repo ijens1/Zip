@@ -20,9 +20,9 @@ namespace zip {
 
       HuffmanNode() = default;
       HuffmanNode(unsigned int c, double prob, HuffmanNode *lchild, HuffmanNode *rchild) : c{c}, prob{prob}, lchild{std::move(lchild)}, rchild{std::move(rchild)} {}
-      HuffmanNode(HuffmanNode&) = default;
+      HuffmanNode(const HuffmanNode&) = default;
       HuffmanNode(HuffmanNode&&) = default;
-      HuffmanNode& operator=(HuffmanNode&) = default;
+      HuffmanNode& operator=(const HuffmanNode&) = default;
       HuffmanNode& operator=(HuffmanNode&&) = default;
       ~HuffmanNode() = default;
   };

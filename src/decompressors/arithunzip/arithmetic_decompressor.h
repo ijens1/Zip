@@ -11,7 +11,7 @@ namespace arithunzip {
 
     std::string doGetState() const override;
     double doGetPercentComplete() const override;
-    void doDecompressFile(std::string) override;
+    void doDecompressFile(std::string, std::string) override;
   };
 
 }

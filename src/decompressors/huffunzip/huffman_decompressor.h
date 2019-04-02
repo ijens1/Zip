@@ -17,7 +17,7 @@ namespace huffunzip {
 
       std::string doGetState() const override;
       double doGetPercentComplete() const override;
-      void doDecompressFile(std::string) override;
+      void doDecompressFile(std::string, std::string) override;
 
       unsigned long long retrieveUncompressedFileLength(std::istream&);
       void generateEncodingTree(std::istream&, std::vector<std::unique_ptr<zip::HuffmanNode>>&, zip::BitIn&, zip::HuffmanNode*&);

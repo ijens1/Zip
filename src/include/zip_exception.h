@@ -11,9 +11,9 @@ namespace zip {
     public:
       ZipException() : reason{"unknown error occured"} {}
       ZipException(std::string reason) : reason{reason} {}
-      ZipException(ZipException& other) : reason{other.reason} {}
+      ZipException(const ZipException& other) : reason{other.reason} {}
       ZipException(ZipException&& other) : reason{std::move(other.reason)} {}
-      ZipException& operator=(ZipException& other) {
+      ZipException& operator=(const ZipException& other) {
         reason = other.reason;
         return *this;
       }

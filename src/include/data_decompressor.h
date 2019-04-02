@@ -7,10 +7,10 @@
 namespace zip {
 
   class DataDecompressor : public ReadableDataDecompressorInterface {
-      virtual void doDecompressFile(std::string) = 0;
+      virtual void doDecompressFile(std::string, std::string) = 0;
 
     public:
-      void decompressFile(std::string file_name) { doDecompressFile(file_name); }
+      void decompressFile(std::string in_file_name, std::string out_file_name) { doDecompressFile(in_file_name, out_file_name); }
   };
 
 }

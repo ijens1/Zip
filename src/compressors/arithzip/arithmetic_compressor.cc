@@ -20,4 +20,5 @@ void arithzip::ArithmeticCompressor::doSetModel(zip::Model model) {
 }
 
 void arithzip::ArithmeticCompressor::doCompressFile(std::string file_name) {
+  
 }

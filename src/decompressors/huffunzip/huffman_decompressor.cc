@@ -14,14 +14,8 @@ double huffunzip::HuffmanDecompressor::doGetPercentComplete() const {
   return 0.0;
 }
 
-void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
-  std::string file_extension = file_name.substr(file_name.find('.'));
-
-  std::string file_core = file_name.substr(0, file_name.find('.'));
-  // Decompress to current dir
-  if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
-
-  std::ifstream fin{file_name, std::ios::binary | std::ios::in};
+void huffunzip::HuffmanDecompressor::doDecompressFile(std::string in_file_name, std::string out_file_name) {
+  std::ifstream fin{in_file_name, std::ios::binary | std::ios::in};
   zip::BitIn fbin;
 
   decompressor_state = "Checking magic number...";
@@ -41,19 +35,6 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
   notifyAllObservers();
   unsigned long long uncompressed_file_length = retrieveUncompressedFileLength(fin);
 
-  unsigned char original_file_extension_length = 0;
-
-  decompressor_state = "Retrieving original file extension...";
-  notifyAllObservers();
-  fin >> original_file_extension_length;
-
-  std::string original_file_extension;
-
-  for (int i = 0; i < original_file_extension_length; ++i) {
-    fin.get(c);
-    original_file_extension += c;
-  }
-
   decompressor_state = "Retrieving encodings...";
   notifyAllObservers();
 
@@ -63,7 +44,7 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string file_name) {
   generateEncodingTree(fin, nodes, fbin, tree);
 
   // Now we have all the information we need to generate the original file.
-  std::ofstream fout{file_core + "." + original_file_extension};
+  std::ofstream fout{out_file_name};
 
   decompressor_state = "Decompressing file...";
   notifyAllObservers();

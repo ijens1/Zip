@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
 
   bool has_provided_file_name = false;
   for (int i = 1; i < argc; ++i) {
-    if (std::strcmp(argv[i], "-m") ==  0 && !has_provided_file_name) {
+    if (std::strcmp(argv[i], "-m") ==  0) {
       if (std::strcmp(argv[i + 1], "huffman") == 0) {
         m = HUFFMAN;
         has_compression_method = true;
@@ -47,6 +47,9 @@ int main(int argc, char** argv) {
     std::cerr << "ERROR: Please specify a compression method using the -m option (see readme for current option values)" << std::endl;
     return 3;
   }
+  if (!has_provided_file_name) {
+    std::cerr << "ERROR: Please specify a file to be compressod" << std::endl;
+  }
 
   std::unique_ptr<zip::DataCompressor> compressor = nullptr;
   if (m == HUFFMAN) {
@@ -59,8 +62,6 @@ int main(int argc, char** argv) {
 
   std::ifstream fin{file_name};
 
-  // The pair of ull ull represents the fraction of the uncompressed data which
-  // c is
   std::map<int, unsigned long long> occurences;
   char c;
   while (fin.get(c)) {

@@ -29,7 +29,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   notifyAllObservers();
 
   std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
-  for (auto& i : model) nodes.push_back(std::make_unique<zip::HuffmanNode>(i.first, model.getProb(i.first), nullptr, nullptr));
+  for (auto character : model.getCharacters()) nodes.push_back(std::make_unique<zip::HuffmanNode>(character, model.getProb(character), nullptr, nullptr));
 
   // Insert the nodes into the priority queue and construct the tree
   // Note that even though there is a call to new here, they should all be
@@ -86,21 +86,11 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
 
   fout << char(file_size >> 56) << char(file_size >> 48) << char(file_size >> 40) << char(file_size >> 32) << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
 
-  compressor_state = "Writing original file extension information...";
-  notifyAllObservers();
-
-  // Assumes that length of file extension is leq 2^8-1 bytes.
-  unsigned char file_extension_length = file_extension.length();
-  fout << file_extension_length;
-
-  fout << file_extension;
-
   compressor_state = "Writing compression model and compressed data...";
   notifyAllObservers();
 
   // Compress data
   for (auto c : uncompressed_data) {
-    
     compressed_data += encodings[c];
   }
   fbout.putBin(compressed_data, fout);
