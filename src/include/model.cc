@@ -1,7 +1,7 @@
 #include "model.h"
 
-zip::Model::Model(std::map<int, unsigned long long> occurences) {
-  unsigned long long prev = 0;
+zip::Model::Model(std::map<int, int> occurences) {
+  int prev = 0;
 
   for (auto occurence : occurences) {
     lower_bounds.insert(std::make_pair(prev, occurence.first));
@@ -13,15 +13,15 @@ zip::Model::Model(std::map<int, unsigned long long> occurences) {
   total_occurences = prev;
 }
 
-unsigned long long zip::Model::getTotalOccurences() {
+int zip::Model::getTotalOccurences() {
   return total_occurences;
 }
 
-std::pair<unsigned long long, unsigned long long> zip::Model::getRange(int character) {
+std::pair<int, int> zip::Model::getRange(int character) {
   return ranges[character];
 }
 
-int zip::Model::getCharacter(unsigned long long value) {
+int zip::Model::getCharacter(int value) {
   auto it = lower_bounds.upper_bound(std::make_pair(value, 256));
   return (it == lower_bounds.end()) ? lower_bounds.rbegin()->second : it->second;
 }

@@ -8,23 +8,23 @@
 namespace zip {
 
   class Model {
-      unsigned long long total_occurences = 0;
-      std::map<int, std::pair<unsigned long long, unsigned long long>> ranges;
-      std::set<std::pair<unsigned long long, int>> lower_bounds;
+      int total_occurences = 0;
+      std::map<int, std::pair<int, int>> ranges;
+      std::set<std::pair<int, int>> lower_bounds;
       std::vector<int> characters;
 
     public:
       Model() {}
-      Model(std::map<int, unsigned long long>);
+      Model(std::map<int, int>);
       Model(const Model&) = default;
       Model(Model&&) = default;
       Model& operator=(const Model&) = default;
       Model& operator=(Model&&) = default;
       ~Model() {}
 
-      unsigned long long getTotalOccurences();
-      std::pair<unsigned long long, unsigned long long> getRange(int);
-      int getCharacter(unsigned long long);
+      int getTotalOccurences();
+      std::pair<int, int> getRange(int);
+      int getCharacter(int);
       double getProb(int);
       const std::vector<int> getCharacters();
   };

@@ -48,7 +48,7 @@ int main(int argc, char** argv) {
     return 3;
   }
   if (!has_provided_file_name) {
-    std::cerr << "ERROR: Please specify a file to be compressod" << std::endl;
+    std::cerr << "ERROR: Please specify a file to be compressed" << std::endl;
   }
 
   std::unique_ptr<zip::DataCompressor> compressor = nullptr;
@@ -62,11 +62,12 @@ int main(int argc, char** argv) {
 
   std::ifstream fin{file_name};
 
-  std::map<int, unsigned long long> occurences;
+  std::map<int, int> occurences;
   char c;
   while (fin.get(c)) {
     ++occurences[c];
   }
+  ++occurences[256];
   compressor->setModel(zip::Model{occurences});
   compressor->compressFile(file_name);
   return 0;

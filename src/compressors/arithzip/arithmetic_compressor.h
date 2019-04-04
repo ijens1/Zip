@@ -14,6 +14,10 @@ namespace arithzip {
     const unsigned long long int full_range = 0x100000000;
     const unsigned long long int half_range = 0x80000000;
     const unsigned long long int quarter_range = 0x40000000;
+    const unsigned long long int minimum_range = 0x40000002;
+
+    // Number of times we've expanded symmetrically about half_range
+    unsigned long long num_underflow_bits = 0;
 
     // Stores the number of opposite bits that need to be outputted after
     // symmetrically expanding the interval [0.25, 0.75) num_pending_bits number of
@@ -24,6 +28,8 @@ namespace arithzip {
     double doGetPercentComplete() const override;
     void doSetModel(zip::Model) override;
     void doCompressFile(std::string) override;
+
+    void update(int);
   };
 
 }
