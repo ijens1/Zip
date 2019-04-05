@@ -18,7 +18,7 @@ namespace huffzip {
       std::string doGetState() const override;
       double doGetPercentComplete() const override;
       void doSetModel(zip::Model) override;
-      void doCompressFile(std::string) override;
+      void doCompressFile(std::string, std::string) override;
 
       void determineEncodings(std::map<char, std::string>&, const zip::HuffmanNode* const, std::string)const;
       void generateCompressedTree(const zip::HuffmanNode *const, std::string&) const;

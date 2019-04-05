@@ -18,9 +18,10 @@ int main(int argc, char** argv) {
   // Process arguments to determine following variables
   bool has_compression_method = false;
   METHOD m;
-  std::string file_name = "";
+  std::string in_file_name = "";
+  std::string out_file_name = "";
 
-  bool has_provided_file_name = false;
+  bool has_provided_file_names = false;
   for (int i = 1; i < argc; ++i) {
     if (std::strcmp(argv[i], "-m") ==  0) {
       if (std::strcmp(argv[i + 1], "huffman") == 0) {
@@ -35,19 +36,20 @@ int main(int argc, char** argv) {
       }
       ++i;
     } else {
-      if (has_provided_file_name) {
+      if (has_provided_file_names) {
         std::cerr << "ERROR: Multiple file compresson is not supported." << std::endl;
         return 2;
       }
-      has_provided_file_name = true;
-      file_name = argv[i];
+      has_provided_file_names = true;
+      in_file_name = argv[i];
+      out_file_name = argv[++i];
     }
   }
   if (!has_compression_method) {
     std::cerr << "ERROR: Please specify a compression method using the -m option (see readme for current option values)" << std::endl;
     return 3;
   }
-  if (!has_provided_file_name) {
+  if (!has_provided_file_names) {
     std::cerr << "ERROR: Please specify a file to be compressed" << std::endl;
   }
 
@@ -60,7 +62,7 @@ int main(int argc, char** argv) {
   std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
   display_service->setDisplayable(compressor.get());
 
-  std::ifstream fin{file_name};
+  std::ifstream fin{in_file_name};
 
   std::map<int, int> occurences;
   char c;
@@ -69,6 +71,6 @@ int main(int argc, char** argv) {
   }
   ++occurences[256];
   compressor->setModel(zip::Model{occurences});
-  compressor->compressFile(file_name);
+  compressor->compressFile(in_file_name, out_file_name);
   return 0;
 }

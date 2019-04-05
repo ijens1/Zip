@@ -18,13 +18,7 @@ void huffzip::HuffmanCompressor::doSetModel(zip::Model model) {
   this->model = model;
 }
 
-void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
-  std::string file_core = file_name.substr(0, file_name.find('.'));
-
-  // Compress to current dir
-  if (file_core.find('/') != std::string::npos) file_core = file_core.substr(file_core.rfind('/') + 1);
-  std::string file_extension = file_name.substr(file_name.find('.') + 1);
-
+void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::string out_file_name) {
   compressor_state = "Generating encodings...";
   notifyAllObservers();
 
@@ -54,8 +48,8 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string file_name) {
   std::map<char, std::string> encodings;
   determineEncodings(encodings, tree, "");
 
-  std::ofstream fout{file_core + zip::huffman_file_extension};
-  std::ifstream fin{file_name};
+  std::ofstream fout{out_file_name};
+  std::ifstream fin{in_file_name};
 
   // Declare bit output object
   zip::BitOut fbout;

@@ -19,8 +19,8 @@ void arithzip::ArithmeticCompressor::doSetModel(zip::Model model) {
   this->model = model;
 }
 
-void arithzip::ArithmeticCompressor::doCompressFile(std::string file_name) {
-  std::string bin_out = ""
+void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, std::string out_file_name) {
+  std::string bin_out = "";
 
   // Write the model
   for (int i = 0; i < 256; ++i) {
@@ -30,21 +30,25 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string file_name) {
     }
   }
 
-  std::ifstream fin{file_name};
+  std::ifstream fin{in_file_name};
 
   char next_char;
   while (fin.get(next_char)) {
-    update(next_char);
+    update(next_char, bin_out);
   }
-  update(256);
+  update(256, bin_out);
+  bin_out += '1';
+
+  std::ofstream fout{out_file_name};
+  zip::BitOut().putBin(bin_out, fout);
 }
 
-void arithzip::ArithmeticCompressor::update(int next_char) {
-    if (low >= high || (low & state_mask) != low || (high & state) != high) {
+void arithzip::ArithmeticCompressor::update(int next_char, std::string& bin_out) {
+    if (low >= high || (low & state_mask) != low || (high & state_mask) != high) {
       throw zip::ZipException{"Assertiion failed. Either low is geq high or low or high is not in the correct 32 bit range"};
     }
     unsigned long long int curr_range = high - low + 1;
-    if (range < minimum_range || range > full_range) {
+    if (curr_range < minimum_range || curr_range > full_range) {
       throw zip::ZipException{"Assertion failed. Range is not an acceptable value"};
     }
 
@@ -61,6 +65,20 @@ void arithzip::ArithmeticCompressor::update(int next_char) {
     // top bit, so shift it out
     while (((low ^ high) & half_range) == 0) {
       char out_bit = char((low >> 31) + 48);
-      bin_out
+      bin_out.push_back(out_bit);
+      for (; num_underflow_bits > 0; --num_underflow_bits) {
+        bin_out.push_back((out_bit == '1') ? '0' : '1');
+      }
+      // These are simplifications of conceptual idea of expanding
+      // the upper or lower half by a factor of two
+      low = ((low << 1) & state_mask);
+      high = ((high << 1) & state_mask) | 1;
+    }
+
+    // Prevent underflow from converging around half_range
+    while (low >= quarter_range && high < quarter_range + half_range) {
+      ++num_underflow_bits;
+      low = (low << 1) & (full_range >> 1);
+      high = ((high << 1) | half_range) | 1;
     }
 }
