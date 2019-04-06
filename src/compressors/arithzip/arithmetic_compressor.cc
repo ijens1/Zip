@@ -26,7 +26,7 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, st
   for (int i = 0; i < 256; ++i) {
     std::pair<int, int> range = model.getRange(i);
     for (int j = 31; j >= 0; --j) {
-      bin_out.push_back(((range.second - range.first) >> j) & 1);
+      bin_out.push_back(char((((range.second - range.first) >> j) & 1) + 48));
     }
   }
 
@@ -45,7 +45,7 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, st
 
 void arithzip::ArithmeticCompressor::update(int next_char, std::string& bin_out) {
     if (low >= high || (low & state_mask) != low || (high & state_mask) != high) {
-      throw zip::ZipException{"Assertiion failed. Either low is geq high or low or high is not in the correct 32 bit range"};
+      throw zip::ZipException{"Assertiion failed. Either low is geq high or low or high is not in the correct 32 bit range. high: " + std::to_string(high) + " low: " + std::to_string(low)};
     }
     unsigned long long int curr_range = high - low + 1;
     if (curr_range < minimum_range || curr_range > full_range) {
@@ -78,7 +78,7 @@ void arithzip::ArithmeticCompressor::update(int next_char, std::string& bin_out)
     // Prevent underflow from converging around half_range
     while (low >= quarter_range && high < quarter_range + half_range) {
       ++num_underflow_bits;
-      low = (low << 1) & half_range;
-      high = ((high << 1) | half_range) | 1;
+      low = (low << 1) & (state_mask >> 1);
+      high = (((high << 1) & state_mask) | half_range) | 1;
     }
 }

@@ -8,6 +8,7 @@
 #include "compressors/arithzip/arithmetic_compressor.h"
 #include "basic_display_service.h"
 #include "model.h"
+#include "zip_exception.h"
 
 enum METHOD {
   HUFFMAN = 0,
@@ -71,6 +72,10 @@ int main(int argc, char** argv) {
   }
   ++occurences[256];
   compressor->setModel(zip::Model{occurences});
-  compressor->compressFile(in_file_name, out_file_name);
+  try {
+    compressor->compressFile(in_file_name, out_file_name);
+  } catch (zip::ZipException e) {
+    std::cerr << e.getReason() << std::endl;
+  }
   return 0;
 }
