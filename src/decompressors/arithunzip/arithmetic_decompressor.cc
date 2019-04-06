@@ -15,4 +15,5 @@ double arithunzip::ArithmeticDecompressor::doGetPercentComplete() const {
 }
 
 void arithunzip::ArithmeticDecompressor::doDecompressFile(std::string in_file_name, std::string out_file_name) {
+
 }
