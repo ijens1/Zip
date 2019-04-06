@@ -23,7 +23,7 @@ std::pair<int, int> zip::Model::getRange(int character) {
 
 int zip::Model::getCharacter(int value) {
   auto it = lower_bounds.upper_bound(std::make_pair(value, 256));
-  return (it == lower_bounds.end()) ? lower_bounds.rbegin()->second : it->second;
+  return (it == lower_bounds.end()) ? lower_bounds.rbegin()->second : (--it)->second;
 }
 
 double zip::Model::getProb(int character) {

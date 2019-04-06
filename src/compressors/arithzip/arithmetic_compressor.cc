@@ -22,6 +22,9 @@ void arithzip::ArithmeticCompressor::doSetModel(zip::Model model) {
 void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, std::string out_file_name) {
   std::string bin_out = "";
 
+  compressor_state = "Writing model to file...";
+  notifyAllObservers();
+
   // Write the model
   for (int i = 0; i < 256; ++i) {
     std::pair<int, int> range = model.getRange(i);
@@ -31,6 +34,9 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, st
   }
 
   std::ifstream fin{in_file_name};
+
+  compressor_state = "Compressing file...";
+  notifyAllObservers();
 
   char next_char;
   while (fin.get(next_char)) {

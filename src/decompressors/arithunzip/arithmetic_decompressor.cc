@@ -1,5 +1,6 @@
 #include <bitset>
 #include <map>
+#include <iostream>
 #include "arithmetic_decompressor.h"
 #include "zip_exception.h"
 
@@ -17,6 +18,9 @@ void arithunzip::ArithmeticDecompressor::doDecompressFile(std::string in_file_na
     zip::BitIn bin;
     std::map<int, int> occurences;
 
+    decompressor_state = "Reading in model...";
+    notifyAllObservers();
+
     // Read in the model
     for (int i = 0; i < 256; ++i) {
         int occurence = 0;
@@ -31,6 +35,9 @@ void arithunzip::ArithmeticDecompressor::doDecompressFile(std::string in_file_na
     occurences[256] = 1;
 
     zip::Model model{occurences};
+
+    decompressor_state = "Decompressing code...";
+    notifyAllObservers();
 
     // Fill the code with the initial 32 bits
     for (int i = 0; i < 32; ++i) {
@@ -60,7 +67,7 @@ void arithunzip::ArithmeticDecompressor::doDecompressFile(std::string in_file_na
       update(character, model, bin, fin);
 
       if (code < low || code > high) {
-        throw zip::ZipException{"Assertion error: The character is no longer in the correct range after update"};
+        throw zip::ZipException{"Assertion error: The code is no longer in the correct range after update"};
       }
 
       // We've reached the end of the code
@@ -73,7 +80,7 @@ void arithunzip::ArithmeticDecompressor::doDecompressFile(std::string in_file_na
 
 void arithunzip::ArithmeticDecompressor::update(int next_char, zip::Model& model, zip::BitIn& bin, std::ifstream& fin) {
     if (low >= high || (low & state_mask) != low || (high & state_mask) != high) {
-      throw zip::ZipException{"Assertiion failed. Either low is geq high or low or high is not in the correct 32 bit range"};
+      throw zip::ZipException{"Assertiion failed. Either low is geq high or low or high is not in the correct 32 bit range. high: " + std::to_string(high) + " low: " + std::to_string(low)};
     }
     unsigned long long int curr_range = high - low + 1;
     if (curr_range < minimum_range || curr_range > full_range) {
@@ -105,9 +112,8 @@ void arithunzip::ArithmeticDecompressor::update(int next_char, zip::Model& model
     while (low >= quarter_range && high < quarter_range + half_range) {
       unsigned char c;
       bin.pullBit(c, fin);
-      // Remove the second bit and pull in next bit
       code = (code & half_range) | ((code << 1) & (state_mask >> 1)) | c;
-      low = (low << 1) & half_range;
-      high = ((high << 1) | half_range) | 1;
+      low = (low << 1) & (state_mask >> 1);
+      high = (((high << 1) & state_mask) | half_range) | 1;
     }
 }
