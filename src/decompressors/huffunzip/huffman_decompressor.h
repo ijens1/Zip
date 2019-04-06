@@ -6,7 +6,7 @@
 #include "data_decompressor.h"
 
 namespace zip {
-  class HuffmanNode;
+  struct HuffmanNode;
   class BitIn;
 }
 

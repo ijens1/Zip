@@ -17,12 +17,7 @@ namespace arithzip {
     const unsigned long long int minimum_range = 0x40000002;
 
     // Number of times we've expanded symmetrically about half_range
-    unsigned long long num_underflow_bits = 0;
-
-    // Stores the number of opposite bits that need to be outputted after
-    // symmetrically expanding the interval [0.25, 0.75) num_pending_bits number of
-    // times
-    unsigned int num_pending_bits = 0;
+    unsigned long long int num_underflow_bits = 0;
 
     std::string doGetState() const override;
     double doGetPercentComplete() const override;

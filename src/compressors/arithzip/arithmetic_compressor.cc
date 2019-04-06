@@ -78,7 +78,7 @@ void arithzip::ArithmeticCompressor::update(int next_char, std::string& bin_out)
     // Prevent underflow from converging around half_range
     while (low >= quarter_range && high < quarter_range + half_range) {
       ++num_underflow_bits;
-      low = (low << 1) & (full_range >> 1);
+      low = (low << 1) & half_range;
       high = ((high << 1) | half_range) | 1;
     }
 }
