@@ -18,19 +18,6 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::string in_file_name, 
   std::ifstream fin{in_file_name, std::ios::binary | std::ios::in};
   zip::BitIn fbin;
 
-  decompressor_state = "Checking magic number...";
-  notifyAllObservers();
-
-  char c;
-  std::string magic_number_str;
-  for (size_t i = 0; i < zip::huffman_magic_number_str.length(); ++i) {
-    fin.get(c);
-    magic_number_str += c;
-  }
-  if (magic_number_str != zip::huffman_magic_number_str) {
-    throw zip::ZipException{"ERROR: The provided .hz file is corrupted\nTerminating..."};
-  }
-
   decompressor_state = "Retrieving original file length...";
   notifyAllObservers();
   unsigned long long uncompressed_file_length = retrieveUncompressedFileLength(fin);

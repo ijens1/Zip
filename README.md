@@ -1,29 +1,30 @@
 # Zip project
-Hi. This is a basic compression exercise (emphasis on basic) to help me learn
+Hi. This is a basic compression exercise to help me learn
 about how simple data compression algorithms work.
 
-At the moment, the complete zipping methods this repo includes just huffman
-coding, although I'm working on arithmetic coding at the moment. I've followed the basic
+I've followed the basic
 steps laid out in [wikipedia](https://en.wikipedia.org/wiki/Huffman_coding) for
 the huffmain coding algorithm.
 
-Usage for huffman coding is 
+I've read multiple sources to help understand arithmetic coding:
+[This paper](https://www.cc.gatech.edu/~jarek/courses/7491/Arithmetic2.pdf) was
+pretty useful to understand the basic concept.
+I've also spent time looking at [this
+repo](https://github.com/nayuki/Reference-arithmetic-coding) to help fix one off
+errors.
+
+Basic usage is as follows
 ```shell
 $ make
-$ ./cpress -m huffman <your_file.file_extension>
+$ ./cpress -m <coding_method> <input_file_name> <output_file_name>
 ```
-This should produce a file called `your_file.hz` in the current directory. This is the compressed data.
-(You might notice that the compression is usually about 50% or less, haven't
-done serious experimentation on that number though).
+`<coding_method>` can be one of `huffman` or `arithmetic`.
 
-To decompress, simply run the other half of this exercise (this step assumes
-you haven't `make clean`'d):
+To decompress, simply run the other half of this exercise:
 ```shell
-$ ./dpress <your_file.hz>
+$ ./dpress -m <coding_method> <input_file_name> <output_file_name>
 ```
 
-This should produce your original file in the current directory.
+The `<coding_method>` should be the same as the one provided in the compression
 
-## Options
-### `-m` Option
-The current values available for this option are `huffman` and `arithmetic`.
+This should produce a file with the original contents of the compressed file

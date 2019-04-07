@@ -23,7 +23,12 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
   notifyAllObservers();
 
   std::vector<std::unique_ptr<zip::HuffmanNode>> nodes;
-  for (auto character : model.getCharacters()) nodes.push_back(std::make_unique<zip::HuffmanNode>(character, model.getProb(character), nullptr, nullptr));
+  for (auto character : model.getCharacters()) {
+    // Don't use EOF character for this compression method
+    if (character != 256) {
+      nodes.push_back(std::make_unique<zip::HuffmanNode>(character, model.getProb(character), nullptr, nullptr));
+    }
+  }
 
   // Insert the nodes into the priority queue and construct the tree
   // Note that even though there is a call to new here, they should all be
@@ -62,14 +67,6 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
     uncompressed_data += line + '\n';
     file_size += line.size() + 1;
   }
-
-  compressor_state = "Writing magic number...";
-  notifyAllObservers();
-
-  fout << zip::huffman_magic_number_str;
-
-  compressor_state = "Writing compression model...";
-  notifyAllObservers();
 
   // Generate compressed tree for decompression
   std::string compressed_data;
