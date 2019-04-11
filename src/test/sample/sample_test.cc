@@ -1,9 +1,9 @@
 #include "sample_test.h"
 
 void ziptest::SampleTest::testEquality() {
-  CPPUNIT_ASSERT(*a != *b);
+    CPPUNIT_ASSERT(*a != *b);
 }
 
 void ziptest::SampleTest::testAddition() {
-  CPPUNIT_ASSERT(*a + *b == 15);
+    CPPUNIT_ASSERT(*a + *b == 15);
 }

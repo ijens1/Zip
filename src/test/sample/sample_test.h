@@ -1,13 +1,15 @@
 #ifndef SAMPLE_TEST_H
 #define SAMPLE_TEST_H
 
-#include <cppunit/TestFixture.h>
-#include <cppunit/TestSuite.h>
-#include <cppunit/TestCaller.h>
+#include <cppunit/extensions/HelperMacros.h>
 
 namespace ziptest {
-
   class SampleTest : public CppUnit::TestFixture {
+      CPPUNIT_TEST_SUITE(SampleTest);
+      CPPUNIT_TEST(testEquality);
+      CPPUNIT_TEST(testAddition);
+      CPPUNIT_TEST_SUITE_END();
+
       int *a, *b;
     public:
       void setUp() {
@@ -25,20 +27,6 @@ namespace ziptest {
       void testEquality();
 
       void testAddition();
-
-      static CppUnit::Test *suite() {
-        CppUnit::TestSuite *suiteOfTests = new CppUnit::TestSuite("SampleTest");
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<SampleTest>(
-              "testEquality",
-              &SampleTest::testEquality));
-
-        suiteOfTests->addTest(new CppUnit::TestCaller<SampleTest>(
-              "testAddition",
-              &SampleTest::testAddition));
-
-        return suiteOfTests;
-      }
   };
 }
 
