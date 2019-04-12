@@ -1,14 +1,14 @@
 CXX = g++
 current_dir = $(shell pwd)
 include_dir = $(current_dir)/src/include
-CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir) -lcppunit
+CXXFLAGS = -std=c++14 -Wall -g -MMD -I $(include_dir)
 EXEC_1 = cpress
 EXEC_2 = dpress
 EXEC_3 = testsuite
 GENERAL_INCLUDE_OBJECTS = src/include/subject.o src/include/basic_display_service.o src/include/bit_io.o src/include/model.o
 OBJECTS_1 = src/cpressmain.o src/compressors/huffzip/huffman_compressor.o src/compressors/arithzip/arithmetic_compressor.o
 OBJECTS_2 = src/dpressmain.o src/decompressors/huffunzip/huffman_decompressor.o src/decompressors/arithunzip/arithmetic_decompressor.o
-OBJECTS_3 = src/testmain.o src/test/include/bit_io_test.o
+OBJECTS_3 = src/testmain.o src/test/sample/sample_test.o src/test/include/bit_io_test.o
 
 all: ${EXEC_1} ${EXEC_2} ${EXEC_3}
 

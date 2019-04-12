@@ -1,9 +1,9 @@
-#include "sample_test.h"
+#include <catch.hpp>
 
-void ziptest::SampleTest::testEquality() {
-    CPPUNIT_ASSERT(*a != *b);
+TEST_CASE("Passing Sample Test Case", "[sample]") {
+  REQUIRE( 1 == 1 );
 }
 
-void ziptest::SampleTest::testAddition() {
-    CPPUNIT_ASSERT(*a + *b == 15);
+TEST_CASE("Failing Sample Test Case", "[sample]") {
+  REQUIRE( 0 == 1 );
 }
