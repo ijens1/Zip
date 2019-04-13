@@ -36,8 +36,11 @@ int main(int argc, char** argv) {
       ++i;
     } else {
       if (has_provided_file_names) {
-        std::cerr << "ERROR: Multiple file compresson is not supported." << std::endl;
+        std::cerr << "ERROR: Multiple file decompresson is not supported." << std::endl;
         return 2;
+      } else if (i + 1 == argc) {
+        std::cerr << "ERROR: Please provide both an input file name and an output file name." << std::endl;
+        return 4;
       }
       has_provided_file_names = true;
       in_file_name = argv[i];
@@ -49,7 +52,8 @@ int main(int argc, char** argv) {
     return 3;
   }
   if (!has_provided_file_names) {
-    std::cerr << "ERROR: Please specify a file to be compressed" << std::endl;
+    std::cerr << "ERROR: Please specify a file to be decompressed" << std::endl;
+    return 5;
   }
 
   std::unique_ptr<zip::DataDecompressor> decompressor = nullptr;
@@ -59,11 +63,14 @@ int main(int argc, char** argv) {
     decompressor = std::make_unique<arithunzip::ArithmeticDecompressor>();
   }
 
-  std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
+  std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>(std::cout);
   display_service->setDisplayable(decompressor.get());
+  
+  std::ifstream fin{in_file_name};
+  std::ofstream fout{out_file_name};
 
   try {
-    decompressor->decompressFile(in_file_name, out_file_name);
+    decompressor->decompressFile(fin, fout);
   } catch (zip::ZipException& exc) {
     std::cerr << exc.getReason() << std::endl;
     return 3;

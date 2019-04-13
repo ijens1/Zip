@@ -3,14 +3,16 @@
 
 #include "readable_data_decompressor_interface.h"
 #include <string>
+#include <istream>
+#include <ostream>
 
 namespace zip {
 
   class DataDecompressor : public ReadableDataDecompressorInterface {
-      virtual void doDecompressFile(std::string, std::string) = 0;
+      virtual void doDecompressFile(std::istream&, std::ostream&) = 0;
 
     public:
-      void decompressFile(std::string in_file_name, std::string out_file_name) { doDecompressFile(in_file_name, out_file_name); }
+      void decompressFile(std::istream& istream, std::ostream& ostream) { doDecompressFile(istream, ostream); }
   };
 
 }

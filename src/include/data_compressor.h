@@ -3,15 +3,17 @@
 
 #include "readable_data_compressor_interface.h"
 #include "writable_data_compressor_interface.h"
+#include <istream>
+#include <ostream>
 
 namespace zip {
 
   class DataCompressor: public ReadableDataCompressorInterface, public WritableDataCompressorInterface {
-      virtual void doCompressFile(std::string, std::string) = 0;
+      virtual void doCompressFile(std::istream&, std::ostream&) = 0;
 
     public:
       virtual ~DataCompressor() = default;
-      void compressFile(std::string in_file_name, std::string out_file_name) { doCompressFile(in_file_name, out_file_name); }
+      void compressFile(std::istream& istream, std::ostream& ostream) { doCompressFile(istream, ostream); }
   };
 }
 

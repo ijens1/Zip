@@ -22,7 +22,7 @@ namespace arithzip {
     std::string doGetState() const override;
     double doGetPercentComplete() const override;
     void doSetModel(zip::Model) override;
-    void doCompressFile(std::string, std::string) override;
+    void doCompressFile(std::istream&, std::ostream&) override;
 
     void update(int, std::string&);
   };

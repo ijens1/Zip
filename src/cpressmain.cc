@@ -40,6 +40,9 @@ int main(int argc, char** argv) {
       if (has_provided_file_names) {
         std::cerr << "ERROR: Multiple file compresson is not supported." << std::endl;
         return 2;
+      } else if (i + 1 == argc) {
+        std::cerr << "ERROR: Please provide both an input file and an output file." << std::endl;
+        return 4;
       }
       has_provided_file_names = true;
       in_file_name = argv[i];
@@ -52,6 +55,7 @@ int main(int argc, char** argv) {
   }
   if (!has_provided_file_names) {
     std::cerr << "ERROR: Please specify a file to be compressed" << std::endl;
+    return 5;
   }
 
   std::unique_ptr<zip::DataCompressor> compressor = nullptr;
@@ -60,7 +64,7 @@ int main(int argc, char** argv) {
   } else {
     compressor = std::make_unique<arithzip::ArithmeticCompressor>();
   }
-  std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>();
+  std::unique_ptr<zip::DisplayService> display_service = std::make_unique<zip::BasicDisplayService>(std::cout);
   display_service->setDisplayable(compressor.get());
 
   std::ifstream fin{in_file_name};
@@ -72,8 +76,13 @@ int main(int argc, char** argv) {
   }
   ++occurences[256];
   compressor->setModel(zip::Model{occurences});
+
+  fin.clear();
+  fin.seekg(0, std::ios::beg);
+  std::ofstream fout{out_file_name};
+
   try {
-    compressor->compressFile(in_file_name, out_file_name);
+    compressor->compressFile(fin, fout);
   } catch (zip::ZipException e) {
     std::cerr << e.getReason() << std::endl;
   }

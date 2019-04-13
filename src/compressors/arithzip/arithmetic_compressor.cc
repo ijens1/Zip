@@ -19,7 +19,7 @@ void arithzip::ArithmeticCompressor::doSetModel(zip::Model model) {
   this->model = model;
 }
 
-void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, std::string out_file_name) {
+void arithzip::ArithmeticCompressor::doCompressFile(std::istream& sin, std::ostream& sout) {
   std::string bin_out = "";
 
   compressor_state = "Writing model to file...";
@@ -33,20 +33,17 @@ void arithzip::ArithmeticCompressor::doCompressFile(std::string in_file_name, st
     }
   }
 
-  std::ifstream fin{in_file_name};
-
   compressor_state = "Compressing file...";
   notifyAllObservers();
 
   char next_char;
-  while (fin.get(next_char)) {
+  while (sin.get(next_char)) {
     update(next_char, bin_out);
   }
   update(256, bin_out);
   bin_out += '1';
 
-  std::ofstream fout{out_file_name};
-  zip::BitOut().putBin(bin_out, fout);
+  zip::BitOut().putBin(bin_out, sout);
 }
 
 void arithzip::ArithmeticCompressor::update(int next_char, std::string& bin_out) {

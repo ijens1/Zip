@@ -18,7 +18,7 @@ void huffzip::HuffmanCompressor::doSetModel(zip::Model model) {
   this->model = model;
 }
 
-void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::string out_file_name) {
+void huffzip::HuffmanCompressor::doCompressFile(std::istream& sin, std::ostream& sout) {
   compressor_state = "Generating encodings...";
   notifyAllObservers();
 
@@ -53,9 +53,6 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
   std::map<char, std::string> encodings;
   determineEncodings(encodings, tree, "");
 
-  std::ofstream fout{out_file_name};
-  std::ifstream fin{in_file_name};
-
   // Declare bit output object
   zip::BitOut fbout;
 
@@ -63,7 +60,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
   std::string line;
   // File size in bytes
   unsigned long long file_size = 0;
-  while (std::getline(fin, line)) {
+  while (std::getline(sin, line)) {
     uncompressed_data += line + '\n';
     file_size += line.size() + 1;
   }
@@ -75,7 +72,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
   compressor_state = "Writing uncompressed data size...";
   notifyAllObservers();
 
-  fout << char(file_size >> 56) << char(file_size >> 48) << char(file_size >> 40) << char(file_size >> 32) << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
+  sout << char(file_size >> 56) << char(file_size >> 48) << char(file_size >> 40) << char(file_size >> 32) << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
 
   compressor_state = "Writing compression model and compressed data...";
   notifyAllObservers();
@@ -84,7 +81,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::string in_file_name, std::s
   for (auto c : uncompressed_data) {
     compressed_data += encodings[c];
   }
-  fbout.putBin(compressed_data, fout);
+  fbout.putBin(compressed_data, sout);
 }
 
 void huffzip::HuffmanCompressor::determineEncodings(std::map<char, std::string>& encodings, const zip::HuffmanNode* const curr_node, std::string curr_encoding) const {

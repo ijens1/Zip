@@ -9,5 +9,5 @@ void zip::BasicDisplayService::doSetDisplayable(zip::Displayable* displayable) {
 
 void zip::BasicDisplayService::doNotify() {
   std::string current_displayable_state = displayable->getState();
-  std::cout << current_displayable_state << std::endl;
+  os << current_displayable_state << std::endl;
 }

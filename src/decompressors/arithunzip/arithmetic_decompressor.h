@@ -20,9 +20,9 @@ namespace arithunzip {
 
     std::string doGetState() const override;
     double doGetPercentComplete() const override;
-    void doDecompressFile(std::string, std::string) override;
+    void doDecompressFile(std::istream&, std::ostream&) override;
 
-    void update(int, zip::Model&, zip::BitIn&, std::ifstream&);
+    void update(int, zip::Model&, zip::BitIn&, std::istream&);
   };
 
 }
