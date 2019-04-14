@@ -28,3 +28,9 @@ $ ./dpress -m <coding_method> <input_file_name> <output_file_name>
 The `<coding_method>` should be the same as the one provided in the compression
 
 This should produce a file with the original contents of the compressed file
+
+## Test Suite
+
+There is a unit testing suite for this project. If you'd like to run it, just run `./testsuite` after `make`, adding `-s` if you'd like more verbose results (includes info about tests that passed).
+
+This assumes you've added [`catch.hpp`](https://raw.githubusercontent.com/catchorg/Catch2/master/single_include/catch2/catch.hpp) to your `usr/local/include`.
