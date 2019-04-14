@@ -59,7 +59,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::istream& sin, std::ostream&
   std::string uncompressed_data;
   std::string line;
   // File size in bytes
-  unsigned long long file_size = 0;
+  int file_size = 0;
   while (std::getline(sin, line)) {
     uncompressed_data += line + '\n';
     file_size += line.size() + 1;
@@ -72,7 +72,7 @@ void huffzip::HuffmanCompressor::doCompressFile(std::istream& sin, std::ostream&
   compressor_state = "Writing uncompressed data size...";
   notifyAllObservers();
 
-  sout << char(file_size >> 56) << char(file_size >> 48) << char(file_size >> 40) << char(file_size >> 32) << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
+  sout << char(file_size >> 24) << char(file_size >> 16) << char(file_size >> 8) << char(file_size);
 
   compressor_state = "Writing compression model and compressed data...";
   notifyAllObservers();

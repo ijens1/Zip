@@ -19,7 +19,7 @@ namespace huffunzip {
       double doGetPercentComplete() const override;
       void doDecompressFile(std::istream&, std::ostream&) override;
 
-      unsigned long long retrieveUncompressedFileLength(std::istream&);
+      int retrieveUncompressedFileLength(std::istream&);
       void generateEncodingTree(std::istream&, std::vector<std::unique_ptr<zip::HuffmanNode>>&, zip::BitIn&, zip::HuffmanNode*&);
       char parseNextChar(std::istream&, zip::HuffmanNode*, zip::BitIn&);
   };

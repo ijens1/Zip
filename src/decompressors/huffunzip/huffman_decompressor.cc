@@ -19,7 +19,7 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::istream& sin, std::os
 
   decompressor_state = "Retrieving original file length...";
   notifyAllObservers();
-  unsigned long long uncompressed_file_length = retrieveUncompressedFileLength(sin);
+  int uncompressed_file_length = retrieveUncompressedFileLength(sin);
 
   decompressor_state = "Retrieving encodings...";
   notifyAllObservers();
@@ -31,21 +31,21 @@ void huffunzip::HuffmanDecompressor::doDecompressFile(std::istream& sin, std::os
 
   decompressor_state = "Decompressing file...";
   notifyAllObservers();
-  unsigned long long count = 0;
+  int count = 0;
   while (count++ != uncompressed_file_length) sout.put(parseNextChar(sin, tree, fbin));
 }
 
-unsigned long long huffunzip::HuffmanDecompressor::retrieveUncompressedFileLength(std::istream& in) {
+int huffunzip::HuffmanDecompressor::retrieveUncompressedFileLength(std::istream& in) {
   char c;
-  unsigned long long ufl = 0;
-  for (int i = 0; i < 8; ++i) {
-    unsigned long long temp = 0;
+  int uncompressed_file_length = 0;
+  for (int i = 0; i < 4; ++i) {
+    int temp = 0;
     in.get(c);
     unsigned char c_u = c;
     temp |= c_u;
-    ufl |= (temp << ((7 - i) * 8));
+    uncompressed_file_length |= (temp << ((3 - i) * 8));
   }
-  return ufl;
+  return uncompressed_file_length;
 }
 
 // Pre: std::istream& in must be position before encoded tree structure
