@@ -4,7 +4,7 @@ about how simple data compression algorithms work.
 
 I've followed the basic
 steps laid out in [wikipedia](https://en.wikipedia.org/wiki/Huffman_coding) for
-the huffmain coding algorithm.
+the huffman algorithm.
 
 I've read multiple sources to help understand arithmetic coding:
 [This paper](https://www.cc.gatech.edu/~jarek/courses/7491/Arithmetic2.pdf) was
