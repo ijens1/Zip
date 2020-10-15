@@ -1,8 +1,7 @@
 # Zip project
-Hi. This is a basic compression exercise to help me learn
-about how simple data compression algorithms work.
+Hi. This is an exercise to help me learn how basic data compression algorithms work.
 
-I've followed the basic
+I've followed the
 steps laid out in [wikipedia](https://en.wikipedia.org/wiki/Huffman_coding) for
 the huffman algorithm.
 
@@ -13,7 +12,7 @@ I've also spent time looking at [this
 repo](https://github.com/nayuki/Reference-arithmetic-coding) to help fix one off
 errors.
 
-Basic usage is as follows
+Usage is as follows
 ```shell
 $ make
 $ ./cpress -m <coding_method> <input_file_name> <output_file_name>
